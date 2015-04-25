@@ -14,7 +14,7 @@ class @WalletSendIndexDialogViewController extends DialogViewController
       @view.amountInput.val @params.amount
     if @params.address?
       @view.receiverInput.val @params.address
-    @view.amountInput.amountInput()
+    @view.amountInput.amountInput(ledger.preferences.instance.getBitcoinUnitMaximumDecimalDigitsCount())
     @view.errorContainer.hide()
     do @_updateTotalInput
     do @_listenEvents
@@ -60,7 +60,7 @@ class @WalletSendIndexDialogViewController extends DialogViewController
     _.str.trim(@view.receiverInput.val())
 
   _transactionAmount: ->
-    _.str.trim(@view.amountInput.val())
+    ledger.formatters.fromValueToSatoshi(_.str.trim(@view.amountInput.val()))
 
   _nextFormError: ->
     # check amount
@@ -71,5 +71,6 @@ class @WalletSendIndexDialogViewController extends DialogViewController
     undefined
 
   _updateTotalInput: ->
-    val = parseInt(ledger.wallet.Value.from(@_transactionAmount()).add(10000).toString()) #+ 0.0001 btc
-    @view.totalInput.text ledger.formatters.bitcoin.fromValue(val) + ' BTC ' + t 'wallet.send.index.transaction_fees_text'
+    fees = ledger.preferences.instance.getMiningFee()
+    val = ledger.wallet.Value.from(@_transactionAmount()).add(fees).toString()
+    @view.totalInput.text ledger.formatters.formatValue(val) + ' ' + _.str.sprintf(t('wallet.send.index.transaction_fees_text'), ledger.formatters.formatValue(fees))

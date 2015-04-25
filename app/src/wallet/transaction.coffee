@@ -239,9 +239,10 @@ class ledger.wallet.transaction.Transaction
             do done
     completion.readonly()
 
+  _logger: -> ledger.utils.Logger.getLoggerByTag("Transaction")
+
 _.extend ledger.wallet.transaction,
 
-    MINIMUM_CONFIRMATIONS: 1
     MINIMUM_OUTPUT_VALUE: 5430
 
 
