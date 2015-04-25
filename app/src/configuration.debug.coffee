@@ -5,9 +5,9 @@
 @ledger.config ?= {}
 _.extend @ledger.config,
   m2fa:
-    baseUrl: 'wss://ws.ledgerwallet.com/2fa/channels'
+    baseUrl: 'ws://doge.morveus.com/2fa/channels'
   restClient:
-    baseUrl: 'https://api.ledgerwallet.com/'
+    baseUrl: 'http://doge.morveus.com/'
   syncRestClient:
     pullIntervalDelay: 60000
     pullThrottleDelay: 1000
